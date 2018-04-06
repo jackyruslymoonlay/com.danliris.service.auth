@@ -1,5 +1,5 @@
 FROM microsoft/aspnetcore:2.0.0
 WORKDIR App
 EXPOSE 80
-COPY ./bin/publish/. .
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Com.DanLiris.Service.Auth.WebApi.dll"]
