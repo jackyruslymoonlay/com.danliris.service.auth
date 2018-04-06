@@ -1,5 +1,15 @@
+FROM microsoft/aspnetcore-build:2.0.2 AS build-env
+WORKDIR /app
+
+COPY Com.DanLiris.Service.Auth.Lib/*.csproj ./Com.DanLiris.Service.Auth.Lib/
+COPY Com.DanLiris.Service.Auth.WebApi/*.csproj ./Com.DanLiris.Service.Auth.WebApi/
+RUN dotnet restore ./Com.DanLiris.Service.Auth.WebApi/
+
+COPY Com.DanLiris.Service.Auth.Lib/. ./Com.DanLiris.Service.Auth.Lib/
+COPY Com.DanLiris.Service.Auth.WebApi/. ./Com.DanLiris.Service.Auth.WebApi/
+RUN dotnet publish ./Com.DanLiris.Service.Auth.WebApi/ -c Release -o out
+
 FROM microsoft/aspnetcore:2.0.0
-WORKDIR App
-EXPOSE 80
+WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Com.DanLiris.Service.Auth.WebApi.dll"]
