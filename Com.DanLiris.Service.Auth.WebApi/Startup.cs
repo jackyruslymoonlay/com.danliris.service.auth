@@ -54,25 +54,14 @@ namespace Com.DanLiris.Service.Auth.WebApi
                    options.DefaultApiVersion = new ApiVersion(1, 1);
                });
 
-            if (env.Equals("Test"))
-            {
+           
                 services.AddIdentityServer()
                     .AddDeveloperSigningCredential()
                     .AddInMemoryIdentityResources(Config.GetIdentityResources())
                     .AddInMemoryApiResources(Config.GetApiResources())
                     .AddInMemoryClients(Config.GetClients())
                     .AddTestUsers(Config.GetTestUsers());
-            }
-            else
-            {
-                services.AddIdentityServer()
-                    .AddDeveloperSigningCredential()
-                    .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                    .AddInMemoryApiResources(Config.GetApiResources())
-                    .AddInMemoryClients(Config.GetClients())
-                    .AddProfileService<ProfileService>();
-            }
-
+           
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
